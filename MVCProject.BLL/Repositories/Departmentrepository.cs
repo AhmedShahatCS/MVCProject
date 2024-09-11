@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MVCProject.BLL.Repositories
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private ApplicationDbContext _dbContext;//Null
 
