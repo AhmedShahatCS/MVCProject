@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MVCProject.BLL.Interfaces;
 using MVCProject.DAL.Entities;
+using MVCProject.PL.ViewModels;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MVCProject.PL.Controllers
@@ -10,11 +15,13 @@ namespace MVCProject.PL.Controllers
     {
         private readonly IEmployeeRepository db;
         private readonly IDepartmentRepository _deptRepo;
+        private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository Db,IDepartmentRepository DeptRepo)
+        public EmployeeController(IEmployeeRepository Db,IDepartmentRepository DeptRepo,IMapper mapper)
         {
             db = Db;
             _deptRepo = DeptRepo;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -30,8 +37,10 @@ namespace MVCProject.PL.Controllers
             //it is  a property
             ViewBag.Message = "Hello from View Bag";
 
+
             var emp = db.GetAll();
-            return View(emp);
+            var MappedEmp = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeViewModel>>(emp);
+            return View(MappedEmp);
         }
 
         public IActionResult Create()
@@ -41,11 +50,12 @@ namespace MVCProject.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee emp)
+        public IActionResult Create(EmployeeViewModel emp)
         {
             if (ModelState.IsValid)
             {
-                var count=db.Add(emp);
+                var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(emp);
+                var count=db.Add(MappedEmp);
                 if (count > 0)
                     TempData["Message"] = "Employee Is Created";
                 {
@@ -61,7 +71,8 @@ namespace MVCProject.PL.Controllers
             if (id is null) return BadRequest();
             var res = db.Get(id.Value);
             if (res is null) return NotFound();
-            return View(res);
+            var MappedEmp = _mapper.Map<Employee, EmployeeViewModel>(res);
+            return View(MappedEmp);
 
 
         }
@@ -75,7 +86,7 @@ namespace MVCProject.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Employee emp,[FromRoute]int id)
+        public IActionResult Edit(EmployeeViewModel emp,[FromRoute]int id)
         {
 
             if (id != emp.Id) return BadRequest();
@@ -83,7 +94,9 @@ namespace MVCProject.PL.Controllers
             {
                 try
                 {
-                    db.Update(emp);
+                    var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(emp);
+
+                    db.Update(mappedEmp);
                     return RedirectToAction(nameof(Index));
                 }catch(Exception ex)
                 {
@@ -101,13 +114,14 @@ namespace MVCProject.PL.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Employee emp, [FromRoute] int id)
+        public IActionResult Delete(EmployeeViewModel emp, [FromRoute] int id)
         {
 
             if (id != emp.Id) return BadRequest();
             try { 
-                
-                    db.Delete(emp);
+                    var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(emp);
+
+                db.Delete(mappedEmp);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
