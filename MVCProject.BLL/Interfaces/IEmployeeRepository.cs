@@ -9,5 +9,6 @@ namespace MVCProject.BLL.Interfaces
 {
    public interface IEmployeeRepository:IGennericRepository<Employee>
     {
+        IQueryable<Employee> GetByName(string value);
     }
 }

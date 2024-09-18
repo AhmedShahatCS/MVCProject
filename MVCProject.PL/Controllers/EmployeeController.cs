@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 
 namespace MVCProject.PL.Controllers
 {
@@ -23,7 +24,7 @@ namespace MVCProject.PL.Controllers
             _deptRepo = DeptRepo;
             _mapper = mapper;
         }
-        public IActionResult Index()
+        public IActionResult Index( string valueSearch)
         {
 
             //viewData it is a Dictionary obj int .net framework 3.5 
@@ -36,9 +37,17 @@ namespace MVCProject.PL.Controllers
             // that used to transfer data from action to view
             //it is  a property
             ViewBag.Message = "Hello from View Bag";
+            IEnumerable<Employee> emp;
+            if (string.IsNullOrEmpty(valueSearch))
+            {
+                emp = db.GetAll();
+            }
+            else
+            {
+                emp = db.GetByName(valueSearch);
+            }
 
-
-            var emp = db.GetAll();
+             
             var MappedEmp = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeViewModel>>(emp);
             return View(MappedEmp);
         }
