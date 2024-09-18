@@ -4,14 +4,16 @@ using MVCProject.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MVCProject.DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914173640_EmployeeModel")]
+    partial class EmployeeModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,28 +84,9 @@ namespace MVCProject.DAL.Data.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("dept_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("dept_Id");
-
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("MVCProject.DAL.Entities.Employee", b =>
-                {
-                    b.HasOne("MVCProject.DAL.Entities.Department", "Department")
-                        .WithMany("Employees")
-                        .HasForeignKey("dept_Id");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("MVCProject.DAL.Entities.Department", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

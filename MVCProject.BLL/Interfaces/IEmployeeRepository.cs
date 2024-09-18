@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVCProject.BLL.Interfaces
 {
-    public interface IDepartmentRepository:IGennericRepository<Department>
+   public interface IEmployeeRepository:IGennericRepository<Employee>
     {
-
-
     }
 }
