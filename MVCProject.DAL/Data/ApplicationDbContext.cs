@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MVCProject.DAL.Data.Configuration;
 using MVCProject.DAL.Entities;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MVCProject.DAL.Data
 {
-    public class ApplicationDbContext:DbContext
+    public class ApplicationDbContext:IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext( DbContextOptions<ApplicationDbContext> options):base(options)
         {
@@ -20,6 +21,7 @@ namespace MVCProject.DAL.Data
         {
             //modelBuilder.ApplyConfiguration<Department>(new DepartmentConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

@@ -16,7 +16,9 @@ namespace MVCProject.DAL.Entities
         
 
         public string Name { get; set; }
-       
+        public string ImageName { get; set; }
+
+
 
         public int? Age { get; set; }
        

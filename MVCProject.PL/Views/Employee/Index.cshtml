@@ -47,6 +47,8 @@
     <table class="table table-striped table-hover">
         <thead>
          <tr>
+                <th>@Html.DisplayNameFor(E => E.Image)</th>
+
                 <th>@Html.DisplayNameFor(E => E.Name)</th>
                 <th>@Html.DisplayNameFor(E => E.Age)</th>
 
@@ -71,8 +73,11 @@
         <tbody>
             @foreach(var emp in Model)
             {
-
+                @*E:\Backend-Rout\MVC\MyDemo\MVCProject\MVCProject.PL\wwwroot\Files\Images\17b7d69f-e555-4405-9fdd-90e3ad2d32901596658115058.jpg*@
                 <tr>
+                    <td>
+                        <img src="~\Files\Images\@emp.ImageName" class="rounded" width="40" height="40" />
+                    </td>
                     <td>@emp.Name</td>
                     <td>@emp.Age</td>
 

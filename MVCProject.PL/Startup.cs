@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using MVCProject.BLL.Interfaces;
 using MVCProject.BLL.Repositories;
 using MVCProject.DAL.Data;
+using MVCProject.DAL.Entities;
 using MVCProject.PL.MapingProfiles;
 using System;
 using System.Collections.Generic;
@@ -36,8 +38,11 @@ namespace MVCProject.PL
             services.AddDbContext<ApplicationDbContext>(option => { option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); });
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddAutoMapper(M=>M.AddProfile(new EmployeeProfile()));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddAuthentication();
 
         }
 
@@ -65,7 +70,7 @@ namespace MVCProject.PL
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Registor}/{id?}");
             });
         }
     }

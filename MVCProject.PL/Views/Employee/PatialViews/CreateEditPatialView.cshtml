@@ -3,12 +3,14 @@
     var Depts = new SelectList(@ViewBag.depts, "Id", "Name");
 }
 
+<input hidden asp-for="ImageName" />
 
 <div class="form-group">
     <label asp-for="Name" class="col-form-label"></label>
     <input asp-for="Name" class="form-control" />
     <span asp-validation-for="Name" class="text-danger"></span>
 </div>
+
 <div class="form-group">
     <label asp-for="Age" class="col-form-label"></label>
     <input asp-for="Age" class="form-control" />
@@ -53,4 +55,10 @@
     <label asp-for="IsActiv" class="col-form-label"></label>
     <input asp-for="IsActiv" class="form-control" />
     <span asp-validation-for="IsActiv" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Image" class="col-form-label"></label>
+    <input asp-for="Image" class="form-control" />
+
 </div>

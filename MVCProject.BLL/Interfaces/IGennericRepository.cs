@@ -8,10 +8,10 @@ namespace MVCProject.BLL.Interfaces
 {
     public interface IGennericRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        int Add(T entity);
-        int Update(T entity);
-        int Delete(T entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetAsync(int id);
+        Task AddAsync(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

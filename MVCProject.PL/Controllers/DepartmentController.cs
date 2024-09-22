@@ -1,20 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCProject.BLL.Interfaces;
 using MVCProject.DAL.Entities;
+using System.Threading.Tasks;
 
 namespace MVCProject.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository departRepo;
+        private readonly IUnitOfWork _unitofwork;
 
-        public DepartmentController(IDepartmentRepository  DepartRepo)
+        //private readonly IDepartmentRepository departRepo;
+
+        public DepartmentController(/*IDepartmentRepository  DepartRepo*/ IUnitOfWork unitofwork)
         {
-            departRepo = DepartRepo;
+            //departRepo = DepartRepo;
+            _unitofwork = unitofwork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var res = departRepo.GetAll();
+            var res =await _unitofwork.DeptRepo.GetAllAsync();
             return View(res);
         }
         [HttpGet]
@@ -23,11 +27,13 @@ namespace MVCProject.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department dept)
+        public async Task<IActionResult> Create(Department dept)
         {
             if (ModelState.IsValid)
             {
-                var count = departRepo.Add(dept);
+              await _unitofwork.DeptRepo.AddAsync(dept);
+               
+                var count =await _unitofwork.CompleteAsync();
                 if (count > 0)
                 {
                     //tempdata it is a dictionary obj KeyValuePair
@@ -39,29 +45,29 @@ namespace MVCProject.PL.Controllers
             return View(dept);
         }
 
-        public IActionResult Details(int? id,string viewName="Details")
+        public async Task<IActionResult> Details(int? id,string viewName="Details")
         {
             if (id == null) return BadRequest();
-            var res = departRepo.Get(id.Value);
+            var res =await _unitofwork.DeptRepo.GetAsync(id.Value);
             if (res == null) return NotFound();
             return View(res);
 
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             //if (id is null) return BadRequest();
             //var res = departRepo.Get(id.Value);
             //if (res == null) return NotFound();
 
             //return View(res);
-            return Details(id,"Edit");
+            return await Details(id,"Edit");
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Department dept,[FromRoute] int id)
+        public async Task<IActionResult> Edit(Department dept,[FromRoute] int id)
         {
             if(id !=dept.Id) return BadRequest();   
 
@@ -69,7 +75,8 @@ namespace MVCProject.PL.Controllers
             {
                 try
                 {
-                    departRepo.Update(dept);
+                    _unitofwork.DeptRepo.Update(dept);
+                    await _unitofwork.CompleteAsync();
                     return RedirectToAction(nameof(Index));
 
                 }
@@ -86,26 +93,27 @@ namespace MVCProject.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id) {
+        public async Task<IActionResult> Delete(int? id) {
 
             //if (id is null) return BadRequest();
             //var res = departRepo.Get(id.Value);
             //if (res == null) return NotFound();
             //return View(res);
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
             
         
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Department dept, [FromRoute] int id)
+        public async Task<IActionResult> Delete(Department dept, [FromRoute] int id)
         {
             if (id != dept.Id) return BadRequest();
             try
                 {
 
-                    departRepo.Delete(dept);
+                    _unitofwork.DeptRepo.Delete(dept);
+               await _unitofwork.CompleteAsync();
                     return RedirectToAction(nameof(Index));
 
                 }
