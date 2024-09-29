@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVCProject.BLL.Interfaces;
 using MVCProject.DAL.Entities;
 using System.Threading.Tasks;
 
 namespace MVCProject.PL.Controllers
 {
-    public class DepartmentController : Controller
+	[Authorize]
+
+	public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitofwork;
 

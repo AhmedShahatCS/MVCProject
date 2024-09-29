@@ -1,10 +1,10 @@
 ﻿@model EmployeeViewModel
 
-@*E:\Backend-Rout\MVC\MyDemo\MVCProject\MVCProject.PL\wwwroot\Files\Images\17b7d69f-e555-4405-9fdd-90e3ad2d32901596658115058.jpg*@
+
 @if(@Model.ImageName is not null)
 {
     <div class="form-group">
-        <img src="~\Files\Images\@Model.ImageName" class=" rounded " width="100" height="100" />
+        <img src="~/Files/Images/@Model.ImageName" class=" rounded " width="100" height="100" />
         <input hidden asp-for="ImageName" class="form-control" />
 
     </div>

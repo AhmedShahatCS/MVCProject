@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MVCProject.BLL.Interfaces;
@@ -14,6 +15,7 @@ using System.Timers;
 
 namespace MVCProject.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
     //    private readonly IEmployeeRepository db;
@@ -92,7 +94,11 @@ namespace MVCProject.PL.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int? id) {
-            ViewBag.depts = _unitOfWork.DeptRepo.GetAllAsync();
+
+			//ViewBag.depts = await _unitOfWork.DeptRepo.GetAllAsync();
+
+
+			ViewBag.depts = await _unitOfWork.DeptRepo.GetAllAsync();
 
             return await Details(id, "Edit");
         

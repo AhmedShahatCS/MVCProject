@@ -16,6 +16,7 @@ namespace MVCProject.PL.Helpers
 
             string FilePath = Path.Combine(FolderPath, FileName);
             using var FS = new FileStream(FilePath, FileMode.Create);
+            file.CopyTo(FS);
             return FileName;
         }
         public static void DeleteFile(string fileName,string foldername)

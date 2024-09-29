@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,10 +41,20 @@ namespace MVCProject.PL
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddAutoMapper(M=>M.AddProfile(new EmployeeProfile()));
+            //services.AddAutoMapper(M=>M.AddProfile(new EmployeeProfile()));
+            services.AddAutoMapper(M => M.AddProfiles(new List<Profile>()
+            {
+                new EmployeeProfile(),
+                new UserProfile(),
+                new RoleProfile()
+            }));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddAuthentication();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
+            {
+                option.LoginPath ="Account/Login";
+                option.AccessDeniedPath ="Home/Error";
+            });
 
         }
 
@@ -63,6 +75,7 @@ namespace MVCProject.PL
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -70,7 +83,7 @@ namespace MVCProject.PL
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Registor}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }
