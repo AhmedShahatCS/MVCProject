@@ -5,26 +5,28 @@
 }
 <h1>Registor Now!</h1>
 
+
 <div class="main-agileinfo">
 	<div class="agileits-top">
+		<div asp-validation-summary="All"></div>
 		<form asp-action="Registor">
 			
 			<input class="text" asp-for="FName"  placeholder="FirstName" required="">
-			<span class="text-danger" asp-vaildation-for="FName"></span>
+			<span class="text-danger" asp-validation-for="FName"></span>
 			<br />
 			<input class="text" asp-for="LName" placeholder="LastName" required="">
-			<span class="text-danger" asp-vaildation-for="LName"></span>
+			<span class="text-danger" asp-validation-for="LName"></span>
 			<br />
 			<input class="text" asp-for="Email" placeholder="Email" required="">
-			<span class="text-danger" asp-vaildation-for="Email"></span>
+			<span class="text-danger" asp-validation-for="Email"></span>
 			<br />
 			<input class="text" asp-for="Password" placeholder="Password" required="">
 
-			<span class="text-danger" asp-vaildation-for="Password"></span>
+			<span class="text-danger" asp-validation-for="Password"></span>
 			<br />
 			<input class="text" asp-for="ConfirmPassword" placeholder="ConfirmPassword" required="">
 
-			<span class="text-danger" asp-vaildation-for="ConfirmPassword"></span>
+			<span class="text-danger" asp-validation-for="ConfirmPassword"></span>
 			<br />
 
 			<div class="wthree-text">

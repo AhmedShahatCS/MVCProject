@@ -28,23 +28,25 @@ namespace MVCProject.PL.Controllers
         }
         public async Task<IActionResult> Index(string SearcValue)
 		{
+			var users = Enumerable.Empty<UserViewModel>();
 			if (string.IsNullOrEmpty(SearcValue))
 			{
-				var users =await _userManager.Users.Select(U => new UserViewModel()
+                users = await _userManager.Users.Select(U => new UserViewModel()
 				{
 					Id = U.Id,
 					Fname = U.FName,
 					Lname = U.LName,
 					Email = U.Email,
-					PhoneNumber=U.PhoneNumber,
-					Roles= _userManager.GetRolesAsync(U).Result,
+					PhoneNumber = U.PhoneNumber,
+					Roles = _userManager.GetRolesAsync(U).Result,
 
 				}).ToListAsync();
 				return View(users);
 			}
 			else
 			{
-				var user = await _userManager.FindByEmailAsync(SearcValue);
+               var user = await _userManager.FindByEmailAsync(SearcValue);
+				
 				var MappedUser = new UserViewModel()
 				{
 					Id = user.Id,
@@ -55,6 +57,8 @@ namespace MVCProject.PL.Controllers
 					Roles = _userManager.GetRolesAsync(user).Result,
 				};
 				return View(new List<UserViewModel> { MappedUser });
+				
+				
 
 			}
 		}

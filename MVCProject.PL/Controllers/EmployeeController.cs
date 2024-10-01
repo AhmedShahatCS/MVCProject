@@ -72,10 +72,10 @@ namespace MVCProject.PL.Controllers
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(emp);
                 await _unitOfWork.EmpRepo.AddAsync(MappedEmp);
                 var count =await _unitOfWork.CompleteAsync();
-                if (count > 0)
-                    TempData["Message"] = "Employee Is Created";
+                if (count > 0)   
                 {
-                    return RedirectToAction(nameof(Index));
+					TempData["Message"] = "Employee Is Created";
+					return RedirectToAction(nameof(Index));
                 }
                 
             }

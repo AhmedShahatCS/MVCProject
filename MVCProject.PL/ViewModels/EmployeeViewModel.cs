@@ -36,7 +36,9 @@ namespace MVCProject.PL.ViewModels
         [InverseProperty("Employees")]
         public Department Department { get; set; }
 
-        public IFormFile Image { get; set; }
+		[Required(ErrorMessage = "upload file")]
+
+		public IFormFile Image { get; set; }
         public string ImageName { get; set; }
 
     }
